@@ -22,12 +22,11 @@ public class RestMain {
         component.getServers().add(Protocol.HTTP, 8088);
 
         // Attach the sample application.
-        component.getDefaultHost().attach("/taotaole/query",
+        component.getDefaultHost().attach("/taotaole/analyze",
                 new JdbcApplication());
-//        component.getDefaultHost().attach("/monitor/hbase/log/reset",
-//                new HBaseResetApplication());
-        // Start the component.
+
         component.start();
+
         LOG.info("starting the http server on port:" + 8282);
     }
 }
