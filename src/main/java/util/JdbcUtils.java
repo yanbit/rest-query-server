@@ -60,13 +60,13 @@ public class JdbcUtils {
                         "from zz_member m join zz_yundb y on(m.mid = y.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY sd " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
         map.put("successpayordernew",
                 "select DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as sd,count(1) as c " +
                         "from zz_member m join zz_yundb y on(m.mid = y.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY sd " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
         //payorderconvrate
         map.put("payorderconvrateall",
                 "select T2.cd,ROUND(T1.c/T2.cTotal*100,2) as r " +
@@ -79,9 +79,9 @@ public class JdbcUtils {
                         "from zz_yuncart as y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY cd) T2 " +
-                        "ORDER BY r ?");
+                        "ORDER BY r ");
         map.put("payorderconvratenew",
-                "select T2.cd,ROUND(T1.c/T2.cTotal*100,2) as r" +
+                "select T2.cd,ROUND(T1.c/T2.cTotal*100,2) as r " +
                         "from " +
                         "(select DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as dd,count(1) as c " +
                         "from zz_yundb as y JOIN zz_member m on (y.mid=m.mid) " +
@@ -91,95 +91,97 @@ public class JdbcUtils {
                         "from zz_yuncart as y JOIN zz_member m on (y.mid=m.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY cd) T2 " +
-                        "ORDER BY r ?");
+                        "ORDER BY r ");
         //addcart
         map.put("addcartall",
-                "select DATE_FORMAT(FROM_UNIXTIME(c.add_time),'%Y-%m-%d') as d,SUM(c.qty) as s " +
-                        "from zz_yuncart AS c " +
+                "select DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') as d,SUM(y.qty) as s " +
+                        "from zz_yuncart AS y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY s ?");
+                        "ORDER BY s ");
         map.put("addcartnew",
-                "select DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,SUM(y.qty) as s" +
+                "select DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,SUM(y.qty) as s " +
                         "from zz_yuncart AS y JOIN zz_member m on (y.mid=m.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY s ?");
+                        "ORDER BY s ");
 
         //successpurchase
         map.put("successpurchaseall",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(c.add_time),'%Y-%m-%d') as d,count(1) as c " +
-                        "from zz_yundb AS c where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') as d,count(1) as c " +
+                        "from zz_yundb y where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
         map.put("successpurchasenew",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,count(1) as c" +
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,count(1) as c " +
                         "from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
 
-        //avgpurchase
-        map.put("avgpurchaseall",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') as d,ROUND(AVG(y.qty),2) as r" +
-                        "from zz_yundb y " +
+        //avgpay
+        map.put("avgpayall",
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') as d,ROUND(AVG(y.qty),2) as r " +
+                        "from zz_yundb AS y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY r ?");
-        map.put("avgpurchasenew",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,ROUND(AVG(y.qty),2) as r" +
-                        "from zz_yundb y JOIN zz_member m on (y.mid=m.mid) " +
+                        "ORDER BY r ");
+        map.put("avgpaynew",
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,ROUND(AVG(y.qty),2) as r " +
+                        "from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY r ?");
+                        "ORDER BY r ");
         //purchaseuser
         map.put("purchaseuserall",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(c.add_time),'%Y-%m-%d') as d,count(1) as c" +
-                        "from zz_yundb AS c " +
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') as d,count(1) as c " +
+                        "from zz_yundb AS y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
         map.put("purchaseusernew",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,count(1) as c" +
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') as d,count(1) as c " +
                         "from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
                         "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY d " +
-                        "ORDER BY c ?");
-        //avgpurchase
-        map.put("avgpurchaseall",
-                "SELECT username,count(1) as c from zz_yundb AS y " +
-                        "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ?  " +
-                        "GROUP BY mid " +
-                        "ORDER BY c ?");
-        map.put("avgpurchasenew",
-                "SELECT y.username,count(1) as c from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
-                        "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') = ? " +
-                        "GROUP BY y.mid " +
-                        "ORDER BY c ?; ");
+                        "ORDER BY c ");
         //userprice
         map.put("userpriceall",
-                "SELECT username,ROUND(AVG(y.qty),2) as r from zz_yundb AS y " +
+                "SELECT username,ROUND(AVG(y.qty),2) as r " +
+                        "from zz_yundb AS y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ? " +
                         "GROUP BY mid " +
-                        "ORDER BY r ?");
+                        "ORDER BY r ");
         map.put("userpricenew",
                 "SELECT y.username,count(1) as c " +
                         "from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
-                        "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') = ? " +
+                        "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
                         "GROUP BY y.mid " +
-                        "ORDER BY c ?");
+                        "ORDER BY c ");
+        //avgpurchase
+        map.put("avgpurchaseall",
+                "SELECT username,count(1) as c " +
+                        "from zz_yundb AS y " +
+                        "where DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(y.add_time),'%Y-%m-%d') < ?  " +
+                        "GROUP BY mid " +
+                        "ORDER BY c ");
+        map.put("avgpurchasenew",
+                "SELECT y.username,count(1) as c from zz_yundb AS y JOIN zz_member m on (y.mid=m.mid) " +
+                        "where DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') > ?  and DATE_FORMAT(FROM_UNIXTIME(m.c_time),'%Y-%m-%d') < ? " +
+                        "GROUP BY y.mid " +
+                        "ORDER BY c ");
         //completedaily
         map.put("completedaily",
-                "SELECT DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') as d,count(1) as c" +
-                        "from zz_yunbuy AS c " +
-                        "where DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') < ? " +
-                        "GROUP BY d " +
-                        "ORDER BY c ?");
-        //luckbaby
-        map.put("luckbaby",
-                "SELECT member_name,DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') as d" +
+                "SELECT DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') as d,count(1) as c " +
                         "from zz_yunbuy AS y " +
                         "where DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') < ? " +
-                        "ORDER BY d ?");
+                        "GROUP BY d " +
+                        "ORDER BY c ");
+        //luckbaby
+        map.put("luckbaby",
+                "SELECT member_name,DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') as d " +
+                        "from zz_yunbuy AS y " +
+                        "where DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') > ? and DATE_FORMAT(FROM_UNIXTIME(end_time),'%Y-%m-%d') < ? " +
+                        "ORDER BY d ");
     }
 }

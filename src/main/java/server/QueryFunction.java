@@ -44,7 +44,7 @@ public class QueryFunction {
         }
         if (Strings.isNullOrEmpty(sdate) || Strings.isNullOrEmpty(edate)) {
             edate = format.format(calendar.getTime());
-            calendar.add(Calendar.MONTH, -1);
+            calendar.add(Calendar.MONTH, -3);
             sdate = format.format(calendar.getTime());
         }
         if (Strings.isNullOrEmpty(order)) {
@@ -59,29 +59,41 @@ public class QueryFunction {
         param.setUser(user);
         System.out.println("=======Request param======= " + param);
         Map map = JdbcUtils.map;
-        String queryString = (String) map.get(subject + user);
+        String queryString;
+        String sub;
+        if (!"completedaily".equals(subject)&&!"luckbaby".equals(subject)){
+            sub=subject+user;
+            queryString = (String) map.get(sub)+param.getOrder();
+        }else {
+            sub=subject;
+            queryString=(String) map.get(sub)+param.getOrder();
+        }
 
-        return query(queryString, param);
+
+        return query(queryString, param,sub);
     }
 
 
-    private String query(String queryString, QueryParam param) {
+    private String query(String queryString, QueryParam param ,String subject) {
+        System.out.println("=======QueryString param======= "+queryString);
         Connection conn = JdbcUtils.getConnection();
-        Map<String, String> jmap = Maps.newHashMap();
+        Map<String, String> jmap = Maps.newLinkedHashMap();
         try {
             PreparedStatement pstmt = conn.prepareStatement(queryString);
 
             if (!param.getSubject().contains("payorderconvrate")) {
-                pstmt.setString(1, param.getSdate());
-                pstmt.setString(2, param.getSdate());
-                pstmt.setString(3, param.getOrder());
+//                if ("avgpurchasenew".equals(subject) || "userpricenew".equals(subject)){
+//                    pstmt.setString(1, param.getSdate());
+//                }else{
+                    pstmt.setString(1, param.getSdate());
+                    pstmt.setString(2, param.getEdate());
+//                }
+
             } else {
                 pstmt.setString(1, param.getSdate());
-                pstmt.setString(2, param.getSdate());
-                pstmt.setString(3, param.getOrder());
-                pstmt.setString(4, param.getSdate());
-                pstmt.setString(5, param.getSdate());
-                pstmt.setString(6, param.getOrder());
+                pstmt.setString(2, param.getEdate());
+                pstmt.setString(3, param.getSdate());
+                pstmt.setString(4, param.getEdate());
             }
             ResultSet result = pstmt.executeQuery();
             while (result.next()) {
